@@ -42,12 +42,20 @@ const pageNames: { [key: string]: string } = {
   "/admin/cashier": "Vendas",
 };
 
+const navItems = [
+  { href: "/admin", icon: LayoutDashboardIcon, label: "Quadro" },
+  { href: "/admin/cashier", icon: DollarSignIcon, label: "Vendas" },
+  { href: "/admin/products", icon: PackageIcon, label: "Produtos" },
+  { href: "/admin/customers", icon: UsersIcon, label: "Clientes" },
+  { href: "/admin/orders", icon: ShoppingBagIcon, label: "Pedidos" },
+  { href: "/admin/pos", icon: ShoppingCartIcon, label: "Caixa" },
+];
+
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Garante que o componente só renderiza após hidratação
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -55,7 +63,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const closeSidebar = () => setSidebarOpen(false);
   const currentPageName = pageNames[pathname] || "Admin";
 
-  // Retorna um layout mínimo durante SSR/hidratação
   if (!mounted) {
     return (
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -78,7 +85,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <span className="sr-only">Admin Panel</span>
         </Link>
 
-        {/* Título visível em mobile e desktop */}
         <h1 className="text-lg font-bold sm:text-xl flex-1 sm:flex-none truncate">
           {currentPageName}
         </h1>
@@ -92,7 +98,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           />
         </div>
 
-        {/* Menu hamburguer para mobile */}
         <button
           className="sm:hidden p-2 hover:bg-accent rounded-md transition-colors flex-shrink-0"
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -135,7 +140,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </header>
 
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        {/* Sidebar - Mobile: visível quando sidebarOpen, Desktop: sempre visível */}
         <aside
           className={`fixed mt-[56px] inset-y-0 left-0 z-20 w-14 flex-col border-r bg-background transition-all duration-200 ${
             sidebarOpen ? "flex" : "hidden"
@@ -143,124 +147,35 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         >
           <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 py-4">
             <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/admin"
-                    onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-                      pathname === "/admin"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    title="Quadro"
-                  >
-                    <LayoutDashboardIcon className="h-5 w-5" />
-                    <span className="sr-only">Quadro</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">Quadro</TooltipContent>
-              </Tooltip>
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/admin/cashier"
-                    onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-                      pathname === "/admin/cashier"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    title="Vendas"
-                  >
-                    <DollarSignIcon className="h-5 w-5" />
-                    <span className="sr-only">Vendas</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">Vendas</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/admin/products"
-                    onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-                      pathname === "/admin/products"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    title="Produtos"
-                  >
-                    <PackageIcon className="h-5 w-5" />
-                    <span className="sr-only">Produtos</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">Produtos</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/admin/customers"
-                    onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-                      pathname === "/admin/customers"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    title="Clientes"
-                  >
-                    <UsersIcon className="h-5 w-5" />
-                    <span className="sr-only">Clientes</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">Clientes</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/admin/orders"
-                    onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-                      pathname === "/admin/orders"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    title="Pedidos"
-                  >
-                    <ShoppingBagIcon className="h-5 w-5" />
-                    <span className="sr-only">Pedidos</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">Pedidos</TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="/admin/pos"
-                    onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-                      pathname === "/admin/pos"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    title="Caixa"
-                  >
-                    <ShoppingCartIcon className="h-5 w-5" />
-                    <span className="sr-only">Caixa</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="right">Caixa</TooltipContent>
-              </Tooltip>
+                return (
+                  <Tooltip key={item.href}>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={item.href}
+                        onClick={closeSidebar}
+                        className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
+                          isActive
+                            ? "bg-accent text-accent-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                        title={item.label}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span className="sr-only">{item.label}</span>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">{item.label}</TooltipContent>
+                  </Tooltip>
+                );
+              })}
             </TooltipProvider>
           </nav>
         </aside>
 
-        {/* Overlay para fechar sidebar em mobile */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 bg-black/50 z-10 sm:hidden"

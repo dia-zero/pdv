@@ -31,7 +31,7 @@ import {
   XIcon,
   CircleUserIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const pageNames: { [key: string]: string } = {
   "/admin": "Quadro",
@@ -45,9 +45,27 @@ const pageNames: { [key: string]: string } = {
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Garante que o componente só renderiza após hidratação
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const closeSidebar = () => setSidebarOpen(false);
   const currentPageName = pageNames[pathname] || "Admin";
+
+  // Retorna um layout mínimo durante SSR/hidratação
+  if (!mounted) {
+    return (
+      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4">
+          <Package2Icon className="h-6 w-6" />
+        </header>
+        <main className="flex-1 p-4">{children}</main>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -61,7 +79,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </Link>
 
         {/* Título visível em mobile e desktop */}
-        <h1 className="text-lg font-bold sm:text-xl flex-1 sm:flex-none">
+        <h1 className="text-lg font-bold sm:text-xl flex-1 sm:flex-none truncate">
           {currentPageName}
         </h1>
 
@@ -76,9 +94,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
         {/* Menu hamburguer para mobile */}
         <button
-          className="sm:hidden p-2 hover:bg-accent rounded-md transition-colors"
+          className="sm:hidden p-2 hover:bg-accent rounded-md transition-colors flex-shrink-0"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label="Toggle menu"
+          aria-expanded={sidebarOpen}
         >
           {sidebarOpen ? (
             <XIcon className="h-6 w-6" />
@@ -118,11 +137,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         {/* Sidebar - Mobile: visível quando sidebarOpen, Desktop: sempre visível */}
         <aside
-          className={`fixed mt-[56px] inset-y-0 left-0 z-20 w-14 flex-col border-r bg-background transition-opacity duration-200 ${
+          className={`fixed mt-[56px] inset-y-0 left-0 z-20 w-14 flex-col border-r bg-background transition-all duration-200 ${
             sidebarOpen ? "flex" : "hidden"
           } sm:flex`}
         >
-          <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+          <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 py-4">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -246,6 +265,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <div
             className="fixed inset-0 bg-black/50 z-10 sm:hidden"
             onClick={closeSidebar}
+            aria-hidden="true"
           />
         )}
 

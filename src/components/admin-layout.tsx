@@ -18,7 +18,6 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import {
   Package2Icon,
   SearchIcon,
@@ -30,6 +29,7 @@ import {
   ShoppingBagIcon,
   MenuIcon,
   XIcon,
+  CircleUserIcon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -94,13 +94,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               size="icon"
               className="overflow-hidden rounded-full flex-shrink-0"
             >
-              <Image
-                src="/placeholder-user.jpg"
-                width={36}
-                height={36}
-                alt="Avatar"
-                className="overflow-hidden rounded-full"
-              />
+              <CircleUserIcon className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

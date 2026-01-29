@@ -1,13 +1,12 @@
 "use client";
 
-import { signup, login } from "./actions";
+import { login } from "./actions";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DollarSign } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -38,75 +37,34 @@ export default function LoginPage() {
             </div>
           )}
 
-          <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Entrar</TabsTrigger>
-              <TabsTrigger value="signup">Registrar</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="login">
-              <form action={login}>
-                <CardContent className="space-y-4 mt-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email-login">E-mail</Label>
-                    <Input
-                      id="email-login"
-                      name="email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      required
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="password-login">Senha</Label>
-                    <Input
-                      id="password-login"
-                      name="password"
-                      type="password"
-                      required
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button type="submit" className="w-full">
-                    Entrar
-                  </Button>
-                </CardFooter>
-              </form>
-            </TabsContent>
-
-            <TabsContent value="signup">
-              <form action={signup}>
-                <CardContent className="space-y-4 mt-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email-signup">E-mail</Label>
-                    <Input
-                      id="email-signup"
-                      name="email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      required
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="password-signup">Senha</Label>
-                    <Input
-                      id="password-signup"
-                      name="password"
-                      type="password"
-                      placeholder="Mínimo 6 caracteres"
-                      required
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button type="submit" className="w-full">
-                    Registrar
-                  </Button>
-                </CardFooter>
-              </form>
-            </TabsContent>
-          </Tabs>
+          <form action={login}>
+            <CardContent className="space-y-4 mt-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email-login">E-mail</Label>
+                <Input
+                  id="email-login"
+                  name="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password-login">Senha</Label>
+                <Input
+                  id="password-login"
+                  name="password"
+                  type="password"
+                  required
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button type="submit" className="w-full">
+                Entrar
+              </Button>
+            </CardFooter>
+          </form>
         </Card>
       </div>
     </div>

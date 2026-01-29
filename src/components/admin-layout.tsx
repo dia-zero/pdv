@@ -47,31 +47,24 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const closeSidebar = () => setSidebarOpen(false);
+  const currentPageName = pageNames[pathname] || "Admin";
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:pl-0">
         <Link
           href="/admin"
-          className="flex items-center gap-2 text-lg font-semibold"
+          className="flex items-center gap-2 text-lg font-semibold flex-shrink-0"
         >
           <Package2Icon className="h-6 w-6" />
           <span className="sr-only">Admin Panel</span>
         </Link>
-        
-        {/* Menu hamburger para mobile */}
-        <button
-          className="sm:hidden ml-auto mr-2"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? (
-            <XIcon className="h-6 w-6" />
-          ) : (
-            <MenuIcon className="h-6 w-6" />
-          )}
-        </button>
 
-        <h1 className="text-xl font-bold hidden sm:block">{pageNames[pathname]}</h1>
+        {/* Título visível em mobile e desktop */}
+        <h1 className="text-lg font-bold sm:text-xl flex-1 sm:flex-none">
+          {currentPageName}
+        </h1>
+
         <div className="relative ml-auto flex-1 md:grow-0 hidden sm:block">
           <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -80,12 +73,26 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
           />
         </div>
+
+        {/* Menu hamburguer para mobile */}
+        <button
+          className="sm:hidden p-2 hover:bg-accent rounded-md transition-colors"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label="Toggle menu"
+        >
+          {sidebarOpen ? (
+            <XIcon className="h-6 w-6" />
+          ) : (
+            <MenuIcon className="h-6 w-6" />
+          )}
+        </button>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
               size="icon"
-              className="overflow-hidden rounded-full"
+              className="overflow-hidden rounded-full flex-shrink-0"
             >
               <Image
                 src="/placeholder-user.jpg"
@@ -117,7 +124,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         {/* Sidebar - Mobile: visível quando sidebarOpen, Desktop: sempre visível */}
         <aside
-          className={`fixed mt-[56px] inset-y-0 left-0 z-20 w-14 flex-col border-r bg-background ${
+          className={`fixed mt-[56px] inset-y-0 left-0 z-20 w-14 flex-col border-r bg-background transition-opacity duration-200 ${
             sidebarOpen ? "flex" : "hidden"
           } sm:flex`}
         >
@@ -128,11 +135,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   <Link
                     href="/admin"
                     onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
                       pathname === "/admin"
                         ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title="Quadro"
                   >
                     <LayoutDashboardIcon className="h-5 w-5" />
                     <span className="sr-only">Quadro</span>
@@ -140,16 +148,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 </TooltipTrigger>
                 <TooltipContent side="right">Quadro</TooltipContent>
               </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/cashier"
                     onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
                       pathname === "/admin/cashier"
                         ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title="Vendas"
                   >
                     <DollarSignIcon className="h-5 w-5" />
                     <span className="sr-only">Vendas</span>
@@ -157,16 +167,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 </TooltipTrigger>
                 <TooltipContent side="right">Vendas</TooltipContent>
               </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/products"
                     onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
                       pathname === "/admin/products"
                         ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title="Produtos"
                   >
                     <PackageIcon className="h-5 w-5" />
                     <span className="sr-only">Produtos</span>
@@ -174,16 +186,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 </TooltipTrigger>
                 <TooltipContent side="right">Produtos</TooltipContent>
               </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/customers"
                     onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
                       pathname === "/admin/customers"
                         ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title="Clientes"
                   >
                     <UsersIcon className="h-5 w-5" />
                     <span className="sr-only">Clientes</span>
@@ -191,16 +205,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 </TooltipTrigger>
                 <TooltipContent side="right">Clientes</TooltipContent>
               </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/orders"
                     onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
                       pathname === "/admin/orders"
                         ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title="Pedidos"
                   >
                     <ShoppingBagIcon className="h-5 w-5" />
                     <span className="sr-only">Pedidos</span>
@@ -208,19 +224,21 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 </TooltipTrigger>
                 <TooltipContent side="right">Pedidos</TooltipContent>
               </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/pos"
                     onClick={closeSidebar}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
                       pathname === "/admin/pos"
                         ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title="Caixa"
                   >
                     <ShoppingCartIcon className="h-5 w-5" />
-                    <span className="sr-only">POS</span>
+                    <span className="sr-only">Caixa</span>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Caixa</TooltipContent>

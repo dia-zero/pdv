@@ -69,7 +69,6 @@ export default function LoginPage() {
         <div className="flex flex-col items-center space-y-2">
           <DollarSign className="h-10 w-10" />
           <h2 className="text-2xl font-bold">Mr. Gold</h2>
-          <p className="text-sm text-muted-foreground">Sistema de PDV e Gerenciamento</p>
         </div>
 
         <Suspense fallback={<div className="h-32" />}>

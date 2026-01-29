@@ -1,51 +1,112 @@
+"use client";
+
 import { signup, login } from "./actions";
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/y71wwxpKfsO
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MountainIcon } from "lucide-react";
+import { DollarSign } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
+
+  const errorMessages: { [key: string]: string } = {
+    email_password_required: 'Email e senha são obrigatórios',
+    invalid_credentials: 'Email ou senha incorretos',
+    signup_failed: 'Erro ao criar conta. Tente novamente.',
+    password_too_short: 'Senha deve ter no mínimo 6 caracteres',
+  };
+
+  const errorMessage = error ? errorMessages[error] || 'Erro desconhecido' : null;
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background">
       <div className="mx-auto w-full max-w-md space-y-6">
         <div className="flex flex-col items-center space-y-2">
-          <MountainIcon className="h-10 w-10" />
-          <h2 className="text-2xl font-bold">Welcome back</h2>
-          <p className="text-muted-foreground">
-            Enter your email and password to sign in.
-          </p>
+          <DollarSign className="h-10 w-10" />
+          <h2 className="text-2xl font-bold">Mr. Gold</h2>
+          <p className="text-sm text-muted-foreground">Sistema de PDV e Gerenciamento</p>
         </div>
+
         <Card>
-          <form>
-            <CardContent className="space-y-4 mt-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email"  type="email" placeholder="name@example.com" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" name="password"  type="password" />
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Link
-                href="#"
-                className="text-sm text-muted-foreground"
-                prefetch={false}
-              >
-                Forgot password?
-              </Link>
-              <Button formAction={login}>Log in</Button>
-              <Button formAction={signup}>Sign up</Button>
-            </CardFooter>
-          </form>
+          {errorMessage && (
+            <div className="p-4 bg-destructive/10 text-destructive rounded-t-lg text-sm">
+              {errorMessage}
+            </div>
+          )}
+
+          <Tabs defaultValue="login" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="login">Entrar</TabsTrigger>
+              <TabsTrigger value="signup">Registrar</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="login">
+              <form action={login}>
+                <CardContent className="space-y-4 mt-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="email-login">E-mail</Label>
+                    <Input
+                      id="email-login"
+                      name="email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      required
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="password-login">Senha</Label>
+                    <Input
+                      id="password-login"
+                      name="password"
+                      type="password"
+                      required
+                    />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button type="submit" className="w-full">
+                    Entrar
+                  </Button>
+                </CardFooter>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="signup">
+              <form action={signup}>
+                <CardContent className="space-y-4 mt-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="email-signup">E-mail</Label>
+                    <Input
+                      id="email-signup"
+                      name="email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      required
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="password-signup">Senha</Label>
+                    <Input
+                      id="password-signup"
+                      name="password"
+                      type="password"
+                      placeholder="Mínimo 6 caracteres"
+                      required
+                    />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button type="submit" className="w-full">
+                    Registrar
+                  </Button>
+                </CardFooter>
+              </form>
+            </TabsContent>
+          </Tabs>
         </Card>
       </div>
     </div>

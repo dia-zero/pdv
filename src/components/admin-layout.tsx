@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { logout } from "@/app/login/actions";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -30,12 +31,12 @@ import {
 } from "lucide-react";
 
 const pageNames: { [key: string]: string } = {
-  "/admin": "Dashboard",
-  "/admin/customers": "Customers",
-  "/admin/products": "Products",
-  "/admin/orders": "Orders",
-  "/admin/pos": "Point of Sale",
-  "/admin/cashier": "Cashier",
+  "/admin": "Quadro",
+  "/admin/customers": "Clientes",
+  "/admin/products": "Produtos",
+  "/admin/orders": "Pedidos",
+  "/admin/pos": "Caixa",
+  "/admin/cashier": "Vendas",
 };
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -56,7 +57,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search..."
+            placeholder="Pesquisar..."
             className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
           />
         </div>
@@ -77,12 +78,19 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuItem>Configurações</DropdownMenuItem>
+            <DropdownMenuItem>Suporte</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <form action={logout}>
+              <button
+                type="submit"
+                className="w-full text-left px-2 py-1.5 text-sm cursor-pointer hover:bg-accent"
+              >
+                Sair
+              </button>
+            </form>
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
@@ -94,97 +102,91 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin"
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      pathname === "/admin"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${pathname === "/admin"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                      } transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
                     <LayoutDashboardIcon className="h-5 w-5" />
-                    <span className="sr-only">Dashboard</span>
+                    <span className="sr-only">Quadro</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Dashboard</TooltipContent>
+                <TooltipContent side="right">Quadro</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/cashier"
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      pathname === "/admin/cashier"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${pathname === "/admin/cashier"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                      } transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
                     <DollarSignIcon className="h-5 w-5" />
-                    <span className="sr-only">Cashier</span>
+                    <span className="sr-only">Vendas</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Cashier</TooltipContent>
+                <TooltipContent side="right">Vendas</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/products"
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      pathname === "/admin/products"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${pathname === "/admin/products"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                      } transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
                     <PackageIcon className="h-5 w-5" />
-                    <span className="sr-only">Products</span>
+                    <span className="sr-only">Produtos</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Products</TooltipContent>
+                <TooltipContent side="right">Produtos</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/customers"
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      pathname === "/admin/customers"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${pathname === "/admin/customers"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                      } transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
                     <UsersIcon className="h-5 w-5" />
-                    <span className="sr-only">Customers</span>
+                    <span className="sr-only">Clientes</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Customers</TooltipContent>
+                <TooltipContent side="right">Clientes</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/orders"
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      pathname === "/admin/orders"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${pathname === "/admin/orders"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                      } transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
                     <ShoppingBagIcon className="h-5 w-5" />
-                    <span className="sr-only">Orders</span>
+                    <span className="sr-only">Pedidos</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Orders</TooltipContent>
+                <TooltipContent side="right">Pedidos</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
                     href="/admin/pos"
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      pathname === "/admin/pos"
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground"
-                    } transition-colors hover:text-foreground md:h-8 md:w-8`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${pathname === "/admin/pos"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground"
+                      } transition-colors hover:text-foreground md:h-8 md:w-8`}
                   >
                     <ShoppingCartIcon className="h-5 w-5" />
                     <span className="sr-only">POS</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Point of Sale</TooltipContent>
+                <TooltipContent side="right">Caixa</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </nav>
